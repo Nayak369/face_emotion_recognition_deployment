@@ -11,13 +11,14 @@
 <p align="center">
   <!-- Visualization of AI brain concept -->
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-    <circle cx="100" cy="100" r="90" fill="#8b5cf6" opacity="0.2"/>
-    <circle cx="100" cy="100" r="70" fill="#06b6d4" opacity="0.3"/>
-    <circle cx="100" cy="100" r="50" fill="#f472b6" opacity="0.4"/>
-    <path d="M60,80 Q100,40 140,80 T180,120" stroke="#8b5cf6" stroke-width="3" fill="none"/>
-    <path d="M60,100 Q100,60 140,100 T180,140" stroke="#06b6d4" stroke-width="3" fill="none"/>
-    <path d="M60,120 Q100,80 140,120 T180,160" stroke="#f472b6" stroke-width="3" fill="none"/>
-    <circle cx="100" cy="100" r="10" fill="#8b5cf6"/>
+    <circle cx="100" cy="100" r="80" fill="#8b5cf6" fill-opacity="0.2"/>
+    <circle cx="100" cy="100" r="60" fill="#06b6d4" fill-opacity="0.3"/>
+    <circle cx="100" cy="100" r="40" fill="#f472b6" fill-opacity="0.4"/>
+    <circle cx="100" cy="100" r="20" fill="#8b5cf6"/>
+    <line x1="40" y1="100" x2="160" y2="100" stroke="#8b5cf6" stroke-width="2"/>
+    <line x1="100" y1="40" x2="100" y2="160" stroke="#06b6d4" stroke-width="2"/>
+    <line x1="60" y1="60" x2="140" y2="140" stroke="#f472b6" stroke-width="2"/>
+    <line x1="140" y1="60" x2="60" y2="140" stroke="#f472b6" stroke-width="2"/>
   </svg>
 </p>
 
