@@ -9,7 +9,16 @@
 </p>
 
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/25181517/183897880-1bd0fc20-09de-4e5f-b1d7-1d3f3c3a2f1d.png" alt="AI Brain Visualization" width="200">
+  <!-- Visualization of AI brain concept -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+    <circle cx="100" cy="100" r="90" fill="#8b5cf6" opacity="0.2"/>
+    <circle cx="100" cy="100" r="70" fill="#06b6d4" opacity="0.3"/>
+    <circle cx="100" cy="100" r="50" fill="#f472b6" opacity="0.4"/>
+    <path d="M60,80 Q100,40 140,80 T180,120" stroke="#8b5cf6" stroke-width="3" fill="none"/>
+    <path d="M60,100 Q100,60 140,100 T180,140" stroke="#06b6d4" stroke-width="3" fill="none"/>
+    <path d="M60,120 Q100,80 140,120 T180,160" stroke="#f472b6" stroke-width="3" fill="none"/>
+    <circle cx="100" cy="100" r="10" fill="#8b5cf6"/>
+  </svg>
 </p>
 
 ## 🌟 Overview
