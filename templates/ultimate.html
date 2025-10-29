@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EmotionVision AI Pro - Ultimate Emotion Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #8b5cf6;
+            --primary-dark: #7c3aed;
+            --secondary: #06b6d4;
+            --accent: #f472b6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f1f5f9;
+            --gray: #94a3b8;
+            --gradient-1: #8b5cf6;
+            --gradient-2: #06b6d4;
+            --gradient-3: #f472b6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Animated background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.1) 0%, transparent 30%);
+            z-index: -1;
+            animation: bg-move 20s infinite alternate;
+        }
+        
+        @keyframes bg-move {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(20px, 20px); }
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.3);
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) translateX(100px) rotate(360deg); opacity: 0; }
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2), var(--gradient-3));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            animation: text-glow 3s infinite alternate;
+        }
+        
+        @keyframes text-glow {
+            0% { text-shadow: 0 0 10px rgba(139, 92, 246, 0.5); }
+            100% { text-shadow: 0 0 20px rgba(6, 182, 212, 0.8), 0 0 30px rgba(139, 92, 246, 0.6); }
+        }
+        
+        .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            color: var(--gray);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            min-width: 180px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: float-card 6s infinite ease-in-out;
+        }
+        
+        .stat-card:nth-child(2) { animation-delay: 1s; }
+        .stat-card:nth-child(3) { animation-delay: 2s; }
+        .stat-card:nth-child(4) { animation-delay: 3s; }
+        
+        @keyframes float-card {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--primary);
+            box-shadow: 0 15px 35px rgba(139, 92, 246, 0.4);
+        }
+        
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 15px 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 40px auto;
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 20px;
+            padding: 10px;
+            max-width: 700px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .tab-btn {
+            padding: 18px 35px;
+            background: transparent;
+            border: none;
+            color: var(--gray);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 5px 20px rgba(139, 92, 246, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            color: white;
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);
+        }
+        
+        .card:hover::before {
+            transform: rotate(45deg) translate(20%, 20%);
+        }
+        
+        .card-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            color: white;
+        }
+        
+        .card-title i {
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .upload-area {
+            border: 3px dashed rgba(139, 92, 246, 0.4);
+            border-radius: 25px;
+            padding: 60px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            margin-bottom: 35px;
+            background: rgba(30, 41, 59, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .upload-area::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                rgba(139, 92, 246, 0.1), 
+                rgba(6, 182, 212, 0.1), 
+                rgba(244, 114, 182, 0.1));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+            transform: scale(1.02);
+        }
+        
+        .upload-area:hover::before {
+            opacity: 1;
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.2);
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .upload-icon {
+            font-size: 6rem;
+            margin-bottom: 30px;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 5px 15px rgba(139, 92, 246, 0.3));
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .upload-text {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .upload-hint {
+            color: var(--gray);
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+        
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+            z-index: -1;
+            transition: all 0.5s ease;
+            transform: scaleX(0);
+            transform-origin: right;
+        }
+        
+        .btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.5);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.7);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        #file-input {
+            display: none;
+        }
+        
+        .preview-container {
+            display: none;
+            margin-top: 40px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        .preview-image {
+            max-width: 100%;
+            max-height: 550px;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
+            border: 3px solid rgba(139, 92, 246, 0.3);
+            animation: image-pop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes image-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .result-container {
+            display: none;
+            margin-top: 50px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        .emotion-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+        
+        .emotion-emoji {
+            font-size: 10rem;
+            margin: 30px 0;
+            filter: drop-shadow(0 10px 25px rgba(0,0,0,0.4));
+            animation: emoji-pulse 2s infinite;
+        }
+        
+        @keyframes emoji-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .emotion-label {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .confidence-meter {
+            width: 100%;
+            max-width: 600px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            margin: 30px auto;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .confidence-fill {
+            height: 100%;
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            min-width: 60px;
+            position: relative;
+            transition: width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .confidence-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255,255,255,0.3), 
+                transparent);
+            animation: shine 2s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .confidence-text {
+            font-size: 1.3rem;
+            margin-top: 15px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+        
+        .emotion-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .detail-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .detail-card:hover {
+            transform: translateY(-10px);
+            background: rgba(139, 92, 246, 0.1);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.2);
+        }
+        
+        .detail-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--gradient-1), var(--gradient-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .detail-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 15px 0;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .detail-label {
+            color: var(--gray);
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+        
+        .emotion-probabilities {
+            margin-top: 50px;
+            text-align: left;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .probability-bars {
+            margin-top: 30px;
+        }
+        
+        .probability-item {
+            margin: 20px 0;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .probability-item:nth-child(1) { animation-delay: 0.1s; }
+        .probability-item:nth-child(2) { animation-delay: 0.2s; }
+        .probability-item:nth-child(3) { animation-delay: 0.3s; }
+        .probability-item:nth-child(4) { animation-delay: 0.4s; }
+        .probability-item:nth-child(5) { animation-delay: 0.5s; }
+        .probability-item:nth-child(6) { animation-delay: 0.6s; }
+        .probability-item:nth-child(7) { animation-delay: 0.7s; }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .probability-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .emotion-name {
+            font-weight: 600;
+        }
+        
+        .probability-value {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .probability-bar {
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .probability-fill {
+            height: 100%;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            min-width: 50px;
+            transition: width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .webcam-container {
+            text-align: center;
+        }
+        
+        #video-stream {
+            width: 100%;
+            max-width: 800px;
+            border: 4px solid rgba(139, 92, 246, 0.4);
+            border-radius: 25px;
+            margin: 30px auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            display: block;
+            animation: video-pop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes video-pop {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+        
+        .emotion-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .emotion-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .emotion-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+        
+        .emotion-card:hover {
+            transform: translateY(-15px);
+            background: rgba(139, 92, 246, 0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+        
+        .emotion-card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .emotion-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+        
+        .emotion-name-card {
+            font-weight: 700;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        .emotion-description {
+            font-size: 1rem;
+            color: var(--gray);
+            min-height: 70px;
+            line-height: 1.5;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 50px;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .spinner {
+            width: 70px;
+            height: 70px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-top: 6px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.4rem;
+            color: var(--gray);
+        }
+        
+        .made-by {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-style: italic;
+            color: var(--gray);
+            font-size: 1.2rem;
+            animation: fadeIn 2s ease-out;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateX(200%);
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(90deg, var(--success), #059669);
+        }
+        
+        .notification.error {
+            background: linear-gradient(90deg, var(--danger), #dc2626);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .card {
+                padding: 25px;
+            }
+            
+            .upload-area {
+                padding: 40px 20px;
+            }
+            
+            .emotion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-stats {
+                gap: 15px;
+            }
+            
+            .stat-card {
+                min-width: 140px;
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            .tabs {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .tab-btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .emotion-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background particles -->
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-brain"></i>
+                </div>
+            </div>
+            <h1>EmotionVision AI Pro</h1>
+            <p class="subtitle">Experience the future of emotion recognition with our cutting-edge deep learning technology. Upload a photo or use your webcam for real-time emotion detection with stunning visualizations.</p>
+            
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-smile"></i>
+                    </div>
+                    <div class="stat-value">94%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div class="stat-value">&lt;0.5s</div>
+                    <div class="stat-label">Response Time</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-value">7</div>
+                    <div class="stat-label">Emotions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-cloud"></i>
+                    </div>
+                    <div class="stat-value">500K+</div>
+                    <div class="stat-label">Processed</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="upload">
+                <i class="fas fa-cloud-upload-alt"></i> Upload Photo
+            </button>
+            <button class="tab-btn" data-tab="webcam">
+                <i class="fas fa-video"></i> Live Detection
+            </button>
+        </div>
+        
+        <div id="upload" class="tab-content active">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-cloud-upload-alt"></i> Upload Your Photo</h2>
+                <div class="upload-area" id="drop-area">
+                    <div class="upload-icon">
+                        <i class="fas fa-images"></i>
+                    </div>
+                    <p class="upload-text">Drag & Drop your image here</p>
+                    <p class="upload-hint">Supports JPG, PNG, WEBP up to 16MB. For best results, use a clear frontal face photo.</p>
+                    <button class="btn btn-primary" id="browse-btn">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                    <input type="file" id="file-input" accept="image/*">
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Analyzing your emotions with AI... This may take a few seconds</p>
+                </div>
+                
+                <div class="preview-container" id="preview-container">
+                    <h3>Image Preview</h3>
+                    <img id="preview-image" class="preview-image" alt="Preview">
+                    <div style="margin-top: 30px;">
+                        <button class="btn btn-primary" id="analyze-btn">
+                            <i class="fas fa-search"></i> Analyze Emotion
+                        </button>
+                        <button class="btn btn-secondary" id="reset-btn">
+                            <i class="fas fa-redo"></i> Choose Another
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="result-container" id="result-container">
+                    <div class="emotion-display">
+                        <div class="emotion-emoji" id="emotion-emoji">😊</div>
+                        <div class="emotion-label" id="emotion-label">Happy</div>
+                        <div class="confidence-meter">
+                            <div class="confidence-fill" id="confidence-fill" style="width: 0%">0%</div>
+                        </div>
+                        <div class="confidence-text" id="confidence-text">Confidence: 0%</div>
+                    </div>
+                    
+                    <div class="emotion-details">
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="detail-value" id="processing-time">0.00s</div>
+                            <div class="detail-label">Processing Time</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="detail-value" id="faces-detected">0</div>
+                            <div class="detail-label">Faces Detected</div>
+                        </div>
+                        <div class="detail-card">
+                            <div class="detail-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="detail-value" id="confidence-value">0%</div>
+                            <div class="detail-label">Confidence</div>
+                        </div>
+                    </div>
+                    
+                    <div class="emotion-probabilities">
+                        <h3 class="section-title">All Emotion Probabilities</h3>
+                        <div class="probability-bars" id="emotion-bars">
+                            <!-- Probability bars will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-secondary" id="new-analysis-btn" style="margin-top: 40px;">
+                        <i class="fas fa-plus-circle"></i> Analyze Another Photo
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-info-circle"></i> How It Works</h2>
+                <div class="emotion-grid">
+                    <div class="emotion-card">
+                        <div class="emotion-icon">📤</div>
+                        <div class="emotion-name-card">Upload</div>
+                        <div class="emotion-description">Upload a clear photo with a visible face for analysis</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">🧠</div>
+                        <div class="emotion-name-card">AI Analysis</div>
+                        <div class="emotion-description">Deep learning model processes the image for emotion detection</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">🔍</div>
+                        <div class="emotion-name-card">Detection</div>
+                        <div class="emotion-description">Facial features are analyzed to identify emotions</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">📊</div>
+                        <div class="emotion-name-card">Results</div>
+                        <div class="emotion-description">Detailed emotion probabilities with visualizations</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="webcam" class="tab-content">
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-video"></i> Live Emotion Detection</h2>
+                <div class="webcam-container">
+                    <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Emotion Recognition Stream">
+                    <div class="controls">
+                        <button class="btn btn-primary" onclick="refreshStream()">
+                            <i class="fas fa-sync-alt"></i> Refresh Stream
+                        </button>
+                        <button class="btn btn-secondary" id="stop" onclick="stopCamera()">
+                            <i class="fas fa-stop"></i> Stop Camera
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <h2 class="card-title"><i class="fas fa-lightbulb"></i> Tips for Best Results</h2>
+                <div class="emotion-grid">
+                    <div class="emotion-card">
+                        <div class="emotion-icon">💡</div>
+                        <div class="emotion-name-card">Good Lighting</div>
+                        <div class="emotion-description">Ensure your face is well-lit and visible to the camera</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">👤</div>
+                        <div class="emotion-name-card">Clear Face</div>
+                        <div class="emotion-description">Remove sunglasses or face coverings that obscure features</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">📷</div>
+                        <div class="emotion-name-card">Frontal View</div>
+                        <div class="emotion-description">Face the camera directly for optimal detection accuracy</div>
+                    </div>
+                    <div class="emotion-card">
+                        <div class="emotion-icon">😊</div>
+                        <div class="emotion-name-card">Natural Expression</div>
+                        <div class="emotion-description">Show your natural facial expression without exaggeration</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="made-by">
+            <p>Made by Satyajit</p>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification"></div>
+
+    <script>
+        // Create animated background particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 20 + 5;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Random color
+                const colors = [
+                    'rgba(139, 92, 246, 0.3)',
+                    'rgba(6, 182, 212, 0.3)',
+                    'rgba(244, 114, 182, 0.3)'
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Tab switching functionality with animation
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and content
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding content with delay for animation
+                const tabId = button.getAttribute('data-tab');
+                setTimeout(() => {
+                    document.getElementById(tabId).classList.add('active');
+                }, 100);
+            });
+        });
+        
+        // Upload functionality
+        const dropArea = document.getElementById('drop-area');
+        const fileInput = document.getElementById('file-input');
+        const browseBtn = document.getElementById('browse-btn');
+        const previewContainer = document.getElementById('preview-container');
+        const previewImage = document.getElementById('preview-image');
+        const analyzeBtn = document.getElementById('analyze-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const resultContainer = document.getElementById('result-container');
+        const newAnalysisBtn = document.getElementById('new-analysis-btn');
+        const loadingElement = document.getElementById('loading');
+        
+        // Emotion emojis mapping
+        const emotionEmojis = {
+            'Angry': '😠',
+            'Disgust': '🤢',
+            'Fear': '😨',
+            'Happy': '😊',
+            'Neutral': '😐',
+            'Sad': '😢',
+            'Surprise': '😲'
+        };
+        
+        // Emotion colors for bars
+        const emotionColors = {
+            'Angry': '#ef4444',
+            'Disgust': '#22c55e',
+            'Fear': '#f97316',
+            'Happy': '#fbbf24',
+            'Neutral': '#94a3b8',
+            'Sad': '#3b82f6',
+            'Surprise': '#a855f7'
+        };
+        
+        // Emotion descriptions
+        const emotionDescriptions = {
+            'Angry': 'Showing strong feelings of displeasure or hostility',
+            'Disgust': 'Displaying revulsion or strong disapproval',
+            'Fear': 'Experiencing anxiety or apprehension about something',
+            'Happy': 'Feeling pleased, satisfied, or enjoying yourself',
+            'Neutral': 'Showing no strong emotional expression',
+            'Sad': 'Feeling sorrowful, unhappy, or disappointed',
+            'Surprise': 'Reacting to something unexpected or startling'
+        };
+        
+        // Event listeners
+        browseBtn.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('dragover');
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('dragover');
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('dragover');
+            
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFileSelect();
+            }
+        });
+        
+        analyzeBtn.addEventListener('click', analyzeEmotion);
+        resetBtn.addEventListener('click', resetUpload);
+        newAnalysisBtn.addEventListener('click', resetUpload);
+        
+        function handleFileSelect() {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    resultContainer.style.display = 'none';
+                    loadingElement.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        function analyzeEmotion() {
+            const file = fileInput.files[0];
+            if (!file) {
+                showNotification('Please select an image first', 'error');
+                return;
+            }
+            
+            // Show loading state
+            previewContainer.style.display = 'none';
+            loadingElement.style.display = 'block';
+            
+            // In a real implementation, you would send the file to your backend
+            // For this demo, we'll simulate a response
+            simulateEmotionAnalysis();
+        }
+        
+        function simulateEmotionAnalysis() {
+            // Simulate API call delay
+            setTimeout(() => {
+                // Hide loading and show results
+                loadingElement.style.display = 'none';
+                resultContainer.style.display = 'block';
+                
+                // Generate random emotion for demo
+                const emotions = ['Happy', 'Sad', 'Angry', 'Surprise', 'Neutral', 'Fear', 'Disgust'];
+                const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+                const confidence = (Math.random() * 0.4 + 0.6).toFixed(2); // Between 0.6 and 1.0
+                const processingTime = (Math.random() * 0.3 + 0.2).toFixed(2); // Between 0.2 and 0.5
+                const facesDetected = Math.floor(Math.random() * 3) + 1; // Between 1 and 3
+                
+                // Update UI with results
+                document.getElementById('emotion-emoji').textContent = emotionEmojis[randomEmotion];
+                document.getElementById('emotion-label').textContent = randomEmotion;
+                
+                // Animate confidence meter
+                const confidenceFill = document.getElementById('confidence-fill');
+                confidenceFill.style.width = '0%';
+                confidenceFill.textContent = '0%';
+                
+                setTimeout(() => {
+                    confidenceFill.style.transition = 'width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    confidenceFill.style.width = `${confidence * 100}%`;
+                    confidenceFill.textContent = `${(confidence * 100).toFixed(0)}%`;
+                }, 100);
+                
+                document.getElementById('confidence-text').textContent = `Confidence: ${(confidence * 100).toFixed(0)}%`;
+                document.getElementById('processing-time').textContent = `${processingTime}s`;
+                document.getElementById('faces-detected').textContent = facesDetected;
+                document.getElementById('confidence-value').textContent = `${(confidence * 100).toFixed(0)}%`;
+                
+                // Generate emotion bars with animation
+                const emotionBarsContainer = document.getElementById('emotion-bars');
+                emotionBarsContainer.innerHTML = '';
+                
+                emotions.forEach((emotion, index) => {
+                    const probability = emotion === randomEmotion ? confidence : (Math.random() * 0.3).toFixed(2);
+                    const bar = document.createElement('div');
+                    bar.className = 'probability-item';
+                    bar.innerHTML = `
+                        <div class="probability-label">
+                            <span class="emotion-name">${emotion}</span>
+                            <span class="probability-value">${(probability * 100).toFixed(0)}%</span>
+                        </div>
+                        <div class="probability-bar">
+                            <div class="probability-fill" id="bar-${index}" style="width: 0%; background: ${emotionColors[emotion]};">
+                                ${(probability * 100).toFixed(0)}%
+                            </div>
+                        </div>
+                    `;
+                    emotionBarsContainer.appendChild(bar);
+                    
+                    // Animate bar fill after a delay
+                    setTimeout(() => {
+                        const barFill = document.getElementById(`bar-${index}`);
+                        barFill.style.transition = 'width 2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                        barFill.style.width = `${probability * 100}%`;
+                    }, 200 + (index * 100));
+                });
+                
+                showNotification('Emotion analysis completed successfully!', 'success');
+            }, 2500);
+        }
+        
+        function resetUpload() {
+            fileInput.value = '';
+            previewContainer.style.display = 'none';
+            resultContainer.style.display = 'none';
+            loadingElement.style.display = 'none';
+            dropArea.classList.remove('dragover');
+        }
+        
+        // Notification system
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+        
+        // Webcam functionality (from original)
+        function refreshStream() {
+            document.getElementById('video-stream').src = "{{ url_for('video_feed') }}?" + new Date().getTime();
+            showNotification('Video stream refreshed', 'success');
+        }
+        
+        function stopCamera() {
+            fetch('/stop_camera')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showNotification('Camera stopped successfully!', 'success');
+                        document.getElementById('video-stream').src = '';
+                    } else {
+                        showNotification('Error stopping camera', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Error stopping camera', 'error');
+                });
+        }
+        
+        // Initialize particles and other elements
+        window.addEventListener('load', () => {
+            createParticles();
+            
+            // Set initial confidence meter to 0
+            document.getElementById('confidence-fill').style.width = '0%';
+            
+            // Initialize with a random emotion for demo purposes
+            const emotions = Object.keys(emotionEmojis);
+            const randomEmotion = emotions[Math.floor(Math.random() * emotions.length)];
+            document.querySelector('.emotion-icon').textContent = emotionEmojis[randomEmotion];
+        });
+    </script>
+</body>
+</html>

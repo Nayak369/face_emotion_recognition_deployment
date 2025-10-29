@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Emotion Recognition</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .video-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        #video-stream {
+            width: 100%;
+            max-width: 640px;
+            border: 2px solid #333;
+            border-radius: 5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button#stop {
+            background-color: #f44336;
+        }
+        button#stop:hover {
+            background-color: #d32f2f;
+        }
+        .info {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e7f3ff;
+            border-left: 6px solid #2196F3;
+            border-radius: 5px;
+        }
+        .made-by {
+            text-align: center;
+            margin-top: 30px;
+            font-style: italic;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Face Emotion Recognition System</h1>
+        
+        <div class="video-container">
+            <img id="video-stream" src="{{ url_for('video_feed') }}" alt="Emotion Recognition Stream">
+        </div>
+        
+        <div class="controls">
+            <button onclick="refreshStream()">Refresh Stream</button>
+            <button id="stop" onclick="stopCamera()">Stop Camera</button>
+        </div>
+        
+        <div class="info">
+            <h3>How it works:</h3>
+            <ul>
+                <li>This system detects faces in real-time using your webcam</li>
+                <li>For each detected face, it predicts the emotion using a deep learning model</li>
+                <li>Detected emotions: Angry, Disgust, Fear, Happy, Neutral, Sad, Surprise</li>
+                <li>The confidence score indicates how certain the model is about its prediction</li>
+            </ul>
+        </div>
+        
+        <div class="made-by">
+            <p>Made by Satyajit</p>
+        </div>
+    </div>
+
+    <script>
+        function refreshStream() {
+            document.getElementById('video-stream').src = "{{ url_for('video_feed') }}?" + new Date().getTime();
+        }
+        
+        function stopCamera() {
+            fetch('/stop_camera')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('Camera stopped successfully!');
+                        document.getElementById('video-stream').src = '';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error stopping camera');
+                });
+        }
+    </script>
+</body>
+</html>
